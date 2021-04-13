@@ -1,0 +1,13 @@
+:root {
+  --body-bg: #000;
+  --pure-white: #fff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--body-bg);
+  color: var(--pure-white);
+}
