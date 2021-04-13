@@ -8,17 +8,23 @@ const SPACEX_API = {
 const getCompanyInfo = function ({ BASE_URL, COMPANY }) {
   return fetch(`${BASE_URL}${COMPANY}`)
     .then((data) => data.json())
-    .then(
-      (parsedData) =>
-        (document.getElementById('summary').textContent = parsedData.summary)
-    )
+    .then((parsedData) => {
+      console.log(parsedData);
+      document.getElementById('summary').textContent = parsedData.summary;
+      document.getElementById('ceo').textContent = parsedData.ceo;
+      document.getElementById('coo').textContent = parsedData.coo;
+      document.getElementById('cto').textContent = parsedData.cto;
+      document.getElementById('cto-propulsion').textContent =
+        parsedData.cto_propulsion;
+      document.getElementById('employees').textContent = parsedData.employees;
+      // document.getElementById('headquarters').textContent =
+      //   parsedData.headquarters;
+      // document.getElementById('links').textContent = parsedData.links;
+    })
     .catch((err) => {
       console.log('Something went wrong getting company info', err);
     });
 };
-
-// const onPageLoad = function () {
-// };
 
 window.addEventListener(
   'DOMContentLoaded',
