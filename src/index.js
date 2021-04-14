@@ -12,7 +12,8 @@ COMPANY
 */
 const getCompanyInfo = function ({ BASE_URL, COMPANY }) {
   return fetch(`${BASE_URL}${COMPANY}`)
-    .then((data) => data.json())
+    .then((rawData) => rawData.json())
+
     .then((parsedData) => ({
       summary: parsedData.summary,
       ceo: parsedData.ceo,
@@ -21,6 +22,7 @@ const getCompanyInfo = function ({ BASE_URL, COMPANY }) {
       headquarters: Object.values(parsedData.headquarters),
       links: Object.entries(parsedData.links),
     }))
+
     .catch((err) => {
       console.log('Something went wrong getting company info', err);
     });
@@ -51,12 +53,43 @@ companyInfo.then((info) => {
 /*
 LATEST LAUNCH
 */
-const getLatestLaunch = async function ({ BASE_URL, LATEST_LAUNCH }) {
-  const launchRaw = await fetch(`${BASE_URL}${LATEST_LAUNCH}`);
-  const launch = await launchRaw.json();
-  console.log(launch);
+const launchMethods = {
+  async getLatestLaunch({ BASE_URL, LATEST_LAUNCH }) {
+    const launchRaw = await fetch(`${BASE_URL}${LATEST_LAUNCH}`);
+    const launch = await launchRaw.json();
+    // console.log(launch);
+    return launch;
+  },
+  render() {
+    const launchEl = document.createElement('div');
+    launchEl.className = 'launch';
+    launchEl.innerHTML = `
+      <h2 class="launch__name">${this.name}</h2>
+      <h3 class="launch__date">${this.date}</h3>
+      <p class="launch__details">${this.details}</p>
+      <div class="launch__success">${this.success}</div>
+      <div class="launch__links">${this.links}</div>
+    `;
+    return launchEl;
+  },
 };
 
-document
-  .querySelector('button')
-  .addEventListener('click', getLatestLaunch.bind(this, SPACEX_API));
+const LatestLaunch = async function () {
+  const launch = Object.create(launchMethods);
+  await launch.getLatestLaunch(SPACEX_API).then((l) => {
+    launch.name = l.name;
+    launch.date = l.date_utc;
+    launch.details = l.details;
+    launch.success = l.success;
+    launch.links = l.links;
+  });
+  return launch;
+};
+
+const onGetLatestLaunch = function () {
+  LatestLaunch()
+    .then((launch) => launch.render())
+    .then((el) => document.querySelector('.launch__container').append(el));
+};
+
+document.querySelector('button').addEventListener('click', onGetLatestLaunch);
