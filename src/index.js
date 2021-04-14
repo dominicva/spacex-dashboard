@@ -38,8 +38,8 @@ const Component = function (tag, className, html) {
 
 const Info = async function () {
   const infoData = await getCompanyInfo(SPACEX_API);
-  const childEl = InfoList(infoData);
   const infoEl = Component('div', 'info');
+  const childEl = InfoList(infoData);
   infoEl.append(childEl);
   return infoEl;
 };
@@ -133,8 +133,8 @@ document.querySelector('button').addEventListener('click', onGetLatestLaunch);
 
 const App = {
   init() {
-    return Info().then((res) =>
-      document.querySelector('.info__container').append(res)
+    return Info().then((info) =>
+      document.querySelector('.info__container').append(info)
     );
   },
 };
