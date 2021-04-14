@@ -1,8 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&display=swap');
 
 :root {
+  /* COLORS */
   --body-bg: #000;
   --pure-white: #fff;
+
+  /* TYPOGRAPHY */
+  --h1-weight: 500;
+  --label-weight: 500;
 }
 
 * {
@@ -22,8 +27,18 @@ ul {
   padding: 0;
 }
 
+a {
+  color: var(--pure-white);
+  text-decoration: none;
+  width: fit-content;
+}
+
+a:hover {
+  color: #007aff;
+}
+
 .heading {
-  font-weight: 500;
+  font-weight: var(--h1-weight);
   letter-spacing: 1px;
 }
 
@@ -35,19 +50,16 @@ ul {
   max-width: 40rem;
 }
 
+.info__item:first-of-type {
+  grid-column: 1 / 3;
+}
+
 .label__label {
-  font-weight: 500;
+  font-weight: var(--label-weight);
   letter-spacing: 0.5px;
 }
 
-.label__li {
-  opacity: 0.9;
-}
-
-/* .company > :first-child {
-  grid-column: 1 / 3;
-} */
-
-.info__item :first-of-type {
-  grid-column: 1 / 3;
+.label__li.links {
+  display: flex;
+  flex-direction: column;
 }

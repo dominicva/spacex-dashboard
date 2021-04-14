@@ -87,10 +87,10 @@ const urlsInfoItem = function (label, value) {
   const { website, flickr, twitter } = value;
   const html = `
     <span class="label__label">${label}</span>
-    <li class="label__li">
-      <a href="${website}">Website</a>
-      <a href="${flickr}">Flickr</a>
-      <a href="${twitter}">Twitter</a>
+    <li class="label__li links">
+      <a href="${website}" target="_blank">Website</a>
+      <a href="${flickr}" target="_blank">Flickr</a>
+      <a href="${twitter}" target="_blank">Twitter</a>
     </li>
   `;
   return Component('label', 'info__item', html);
