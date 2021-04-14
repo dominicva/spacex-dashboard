@@ -8,8 +8,10 @@ const SPACEX_API = {
 };
 
 /*
-COMPANY
+COMPANY INFO SECTION
 */
+
+// DATA
 const getCompanyInfo = function ({ BASE_URL, COMPANY }) {
   return fetch(`${BASE_URL}${COMPANY}`)
     .then((rawData) => rawData.json())
@@ -19,8 +21,8 @@ const getCompanyInfo = function ({ BASE_URL, COMPANY }) {
       ceo: parsedData.ceo,
       coo: parsedData.coo,
       employees: parsedData.employees,
-      headquarters: Object.values(parsedData.headquarters),
-      links: Object.entries(parsedData.links),
+      headquarters: parsedData.headquarters,
+      links: parsedData.links,
     }))
 
     .catch((err) => {
@@ -28,27 +30,88 @@ const getCompanyInfo = function ({ BASE_URL, COMPANY }) {
     });
 };
 
-const InfoField = function (label, content, type) {
-  const infoEl = document.createElement('label');
-  infoEl.className = 'company__field';
-  infoEl.innerHTML = `
-      <span class="label__label">${label}</span>
-      <li class="label__li">${content}</li>
-  `;
+// FUNCTIONALITY
+// UI COMPONENTS
+const Component = function (tag, className, html) {
+  const domEl = document.createElement(tag);
+
+  domEl.className = className;
+  if (html) domEl.innerHTML = html;
+
+  return domEl;
+};
+
+const Info = async function () {
+  const infoData = await getCompanyInfo(SPACEX_API);
+  console.log(infoData);
+  const childEl = InfoList(infoData);
+  const infoEl = Component('div', 'info');
+  infoEl.append(childEl);
   return infoEl;
 };
 
-const render = function (hook, el) {
-  hook.append(el);
+const InfoList = function (data) {
+  const infoEl = Component('ul', 'info__list', '');
+
+  for (let key in data) {
+    if (key == 'headquarters') {
+      infoEl.append(hqInfoItem('Headquarters', data[key]));
+    } else if (key == 'links') {
+      infoEl.append(urlsInfoItem('Links', data[key]));
+    } else {
+      infoEl.append(InfoItem(key.toUpperCase(), data[key]));
+    }
+  }
+
+  return infoEl;
 };
 
-const companyInfo = getCompanyInfo(SPACEX_API);
-companyInfo.then((info) => {
-  for (const key in info) {
-    const infoEl = InfoField(key.toUpperCase(), info[key]);
-    render(document.querySelector('.company'), infoEl);
-  }
-});
+const InfoItem = function (label, content) {
+  const html = `
+  <span class="label__label">${label}</span>
+  <li class="label__li">${content}</li>
+`;
+  return Component('label', 'info__item', html);
+};
+
+const hqInfoItem = function (label, value) {
+  const { address, city, state } = value;
+  const html = `
+    <span class="label__label">${label}</span>
+    <li class="label__li">${address}<br>${city}<br>${state}</li>
+  `;
+  return Component('label', 'info__item', html);
+};
+
+const urlsInfoItem = function (label, value) {
+  const { website, flickr, twitter } = value;
+  const html = `
+    <span class="label__label">${label}</span>
+    <li class="label__li">
+      <a href="${website}">Website</a>
+      <a href="${flickr}">Flickr</a>
+      <a href="${twitter}">Twitter</a>
+    </li>
+  `;
+  return Component('label', 'info__item', html);
+};
+
+const info = Info();
+info.then((res) => document.querySelector('.info__container').append(res));
+// console.log('info:', info);
+// Info();
+
+// const render = function (hook, el) {
+//   hook.append(el);
+// };
+
+// const companyInfo = getCompanyInfo(SPACEX_API);
+// companyInfo.then((info) => {
+//   for (const key in info) {
+//     const infoEl = InfoItem(key.toUpperCase(), info[key]);
+//     render(document.querySelector('.info__list'), infoEl);
+//   }
+// });
 
 /*
 LATEST LAUNCH

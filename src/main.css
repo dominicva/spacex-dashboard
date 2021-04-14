@@ -27,7 +27,7 @@ ul {
   letter-spacing: 1px;
 }
 
-.company {
+.info__list {
   display: grid;
   grid-template-columns: repeat(2, 50%);
   row-gap: 1rem;
@@ -48,6 +48,6 @@ ul {
   grid-column: 1 / 3;
 } */
 
-.company__field:first-of-type {
+.info__item :first-of-type {
   grid-column: 1 / 3;
 }
