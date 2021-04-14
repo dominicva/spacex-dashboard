@@ -57,6 +57,10 @@ button:hover {
   color: var(--pure-white);
 }
 
+button:focus {
+  outline: none;
+}
+
 .heading {
   font-weight: var(--h1-weight);
   letter-spacing: 1px;

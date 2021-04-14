@@ -15,7 +15,6 @@ COMPANY INFO SECTION
 const getCompanyInfo = function ({ BASE_URL, COMPANY }) {
   return fetch(`${BASE_URL}${COMPANY}`)
     .then((rawData) => rawData.json())
-
     .then((parsedData) => ({
       summary: parsedData.summary,
       ceo: parsedData.ceo,
@@ -24,26 +23,21 @@ const getCompanyInfo = function ({ BASE_URL, COMPANY }) {
       headquarters: parsedData.headquarters,
       links: parsedData.links,
     }))
-
     .catch((err) => {
       console.log('Something went wrong getting company info', err);
     });
 };
 
 // FUNCTIONALITY
-// UI COMPONENTS
 const Component = function (tag, className, html) {
   const domEl = document.createElement(tag);
-
   domEl.className = className;
   if (html) domEl.innerHTML = html;
-
   return domEl;
 };
 
 const Info = async function () {
   const infoData = await getCompanyInfo(SPACEX_API);
-  console.log(infoData);
   const childEl = InfoList(infoData);
   const infoEl = Component('div', 'info');
   infoEl.append(childEl);
@@ -52,7 +46,6 @@ const Info = async function () {
 
 const InfoList = function (data) {
   const infoEl = Component('ul', 'info__list', '');
-
   for (let key in data) {
     if (key == 'headquarters') {
       infoEl.append(hqInfoItem('Headquarters', data[key]));
@@ -62,7 +55,6 @@ const InfoList = function (data) {
       infoEl.append(InfoItem(key.toUpperCase(), data[key]));
     }
   }
-
   return infoEl;
 };
 
@@ -96,23 +88,6 @@ const urlsInfoItem = function (label, value) {
   return Component('label', 'info__item', html);
 };
 
-const info = Info();
-info.then((res) => document.querySelector('.info__container').append(res));
-// console.log('info:', info);
-// Info();
-
-// const render = function (hook, el) {
-//   hook.append(el);
-// };
-
-// const companyInfo = getCompanyInfo(SPACEX_API);
-// companyInfo.then((info) => {
-//   for (const key in info) {
-//     const infoEl = InfoItem(key.toUpperCase(), info[key]);
-//     render(document.querySelector('.info__list'), infoEl);
-//   }
-// });
-
 /*
 LATEST LAUNCH
 */
@@ -120,7 +95,6 @@ const launchMethods = {
   async getLatestLaunch({ BASE_URL, LATEST_LAUNCH }) {
     const launchRaw = await fetch(`${BASE_URL}${LATEST_LAUNCH}`);
     const launch = await launchRaw.json();
-    // console.log(launch);
     return launch;
   },
   render() {
@@ -156,3 +130,13 @@ const onGetLatestLaunch = function () {
 };
 
 document.querySelector('button').addEventListener('click', onGetLatestLaunch);
+
+const App = {
+  init() {
+    return Info().then((res) =>
+      document.querySelector('.info__container').append(res)
+    );
+  },
+};
+
+App.init();
