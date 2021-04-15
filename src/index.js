@@ -144,6 +144,11 @@ const launchMethods = {
       <p class="launch__details">${this.details}</p>
       <label class="label__label" for="launch__success">Success status</label>
       <div class="launch__success">${utils.wordCapitalize(this.success)}</div>
+      <label class="label__label" for="launch__webcast">Launch webcast</label>
+      <iframe class="launch__webcast" src="https://www.youtube.com/embed/${
+        this.links.youtube_id
+      }" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" ></iframe>
+      <label class="label__label" for="launch__links">Links</label>
       <ul class="launch__links">
         ${this.links}
       </ul>

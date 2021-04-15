@@ -61,6 +61,11 @@ button:focus {
   outline: none;
 }
 
+iframe {
+  width: 100%;
+  height: 20rem;
+}
+
 .heading {
   font-weight: var(--h1-weight);
   letter-spacing: 1px;
@@ -115,12 +120,25 @@ label[for='launch__name'] {
 .launch__name,
 .launch__date,
 .launch__time,
-.launch__details {
+.launch__details,
+.launch__success,
+.launch__webcast,
+.launch__links {
   margin-top: 0.25rem;
+  margin-bottom: 1.25rem;
 }
 
 .launch__name,
-.launch__date {
+.launch__date,
+.launch__time {
   letter-spacing: 0.5px;
+}
+
+.launch__name {
   font-weight: 600;
+}
+
+.launch__date,
+.launch__time {
+  font-weight: 500;
 }
