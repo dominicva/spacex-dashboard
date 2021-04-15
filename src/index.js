@@ -150,15 +150,7 @@ const launchMethods = {
         src="https://www.youtube.com/embed/${this.links.youtube_id}" 
         title="YouTube video player" 
         frameborder="0" 
-        allow="
-          accelerometer; 
-          autoplay; 
-          clipboard-write; 
-          encrypted-media; 
-          gyroscope; 
-          picture-in-picture; 
-          fullscreen
-        ">
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen">
       </iframe>
       <label class="label__label" for="launch__links">Links</label>
       <ul class="launch__links">
