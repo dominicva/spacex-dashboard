@@ -48,9 +48,9 @@ const InfoList = function (data) {
   const infoEl = Component('ul', 'info__list', '');
   for (let key in data) {
     if (key == 'headquarters') {
-      infoEl.append(hqInfoItem('Headquarters', data[key]));
+      infoEl.append(HqInfoItem('Headquarters', data[key]));
     } else if (key == 'links') {
-      infoEl.append(urlsInfoItem('Links', data[key]));
+      infoEl.append(UrlsInfoItem('Links', data[key]));
     } else {
       infoEl.append(InfoItem(key.toUpperCase(), data[key]));
     }
@@ -66,7 +66,7 @@ const InfoItem = function (label, content) {
   return Component('label', 'info__item', html);
 };
 
-const hqInfoItem = function (label, value) {
+const HqInfoItem = function (label, value) {
   const { address, city, state } = value;
   const html = `
     <span class="label__label">${label}</span>
@@ -75,7 +75,7 @@ const hqInfoItem = function (label, value) {
   return Component('label', 'info__item', html);
 };
 
-const urlsInfoItem = function (label, value) {
+const UrlsInfoItem = function (label, value) {
   const { website, flickr, twitter } = value;
   const html = `
     <span class="label__label">${label}</span>
@@ -89,7 +89,7 @@ const urlsInfoItem = function (label, value) {
 };
 
 /*
-LATEST LAUNCH
+LAUNCHES
 */
 const launchMethods = {
   async getLatestLaunch({ BASE_URL, LATEST_LAUNCH }) {
@@ -97,7 +97,12 @@ const launchMethods = {
     const launch = await launchRaw.json();
     return launch;
   },
-  render() {
+  getLatestLaunchHandler() {
+    LatestLaunch()
+      .then((launch) => launch.renderLatestLaunch())
+      .then((el) => document.querySelector('.launch__container').append(el));
+  },
+  renderLatestLaunch() {
     const launchEl = document.createElement('div');
     launchEl.className = 'launch';
     launchEl.innerHTML = `
@@ -123,19 +128,20 @@ const LatestLaunch = async function () {
   return launch;
 };
 
-const onGetLatestLaunch = function () {
-  LatestLaunch()
-    .then((launch) => launch.render())
-    .then((el) => document.querySelector('.launch__container').append(el));
-};
-
-document.querySelector('button').addEventListener('click', onGetLatestLaunch);
-
 const App = {
-  init() {
+  infoInit() {
     return Info().then((info) =>
       document.querySelector('.info__container').append(info)
     );
+  },
+  initEventListeners() {
+    document
+      .querySelector('button')
+      .addEventListener('click', launchMethods.getLatestLaunchHandler);
+  },
+  init() {
+    this.infoInit();
+    this.initEventListeners();
   },
 };
 
