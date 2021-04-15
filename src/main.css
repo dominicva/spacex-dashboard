@@ -74,7 +74,15 @@ button:focus {
   max-width: 40rem;
 }
 
+.info__item {
+  cursor: auto;
+}
+
 .info__item:first-of-type {
+  grid-column: 1 / 3;
+}
+
+.info__item:last-of-type {
   grid-column: 1 / 3;
 }
 
@@ -84,5 +92,35 @@ button:focus {
 }
 
 .btns__container {
-  margin: 2rem 0;
+  margin: 2rem 0 4rem 0;
+}
+
+.launch {
+  padding-top: 2rem;
+  border-top: 1px solid white;
+}
+
+.launch__image {
+  height: 20rem;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+label[for='launch__name'] {
+  display: block;
+  margin-top: 1.5rem;
+}
+
+.launch__name,
+.launch__date,
+.launch__time,
+.launch__details {
+  margin-top: 0.25rem;
+}
+
+.launch__name,
+.launch__date {
+  letter-spacing: 0.5px;
+  font-weight: 600;
 }

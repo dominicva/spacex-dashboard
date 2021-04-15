@@ -8,6 +8,15 @@ const SPACEX_API = {
 };
 
 /*
+UTILS
+*/
+const utils = {
+  wordCapitalize(word) {
+    return String(word)[0].toUpperCase() + String(word).slice(1);
+  },
+};
+
+/*
 COMPANY INFO SECTION
 */
 
@@ -52,7 +61,7 @@ const InfoList = function (data) {
     } else if (key == 'links') {
       infoEl.append(UrlsInfoItem('Links', data[key]));
     } else {
-      infoEl.append(InfoItem(key.toUpperCase(), data[key]));
+      infoEl.append(InfoItem(utils.wordCapitalize(key), data[key]));
     }
   }
   return infoEl;
@@ -102,31 +111,63 @@ const launchMethods = {
       .then((launch) => launch.renderLatestLaunch())
       .then((el) => document.querySelector('.launch__container').append(el));
   },
+  unixDateHandler(unixTimestamp) {
+    // THANK YOU: https://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
+    // Create a new JavaScript Date object based on the timestamp
+    // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+    const date = new Date(unixTimestamp * 1000);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const hour = date.getHours();
+    const minute = '0' + date.getMinutes();
+    const second = '0' + date.getSeconds();
+
+    return `${day}/${month}/${year} ${hour}:${minute.substr(
+      -2
+    )}:${second.substr(-2)}`;
+  },
   renderLatestLaunch() {
     const launchEl = document.createElement('div');
     launchEl.className = 'launch';
     launchEl.innerHTML = `
+      <div class="launch__image" style="background-image: url(${
+        this.links.flickr.original[0]
+      })"></div>
+      <label class="label__label" for="launch__name">Name</label>
       <h2 class="launch__name">${this.name}</h2>
+      <label class="label__label" for="launch__date">Date (day/month/year)</label>
       <h3 class="launch__date">${this.date}</h3>
+      <label class="label__label" for="launch__time">Time (hour/minute/second)</label>
+      <h3 class="launch__time">${this.time}</h3>
+      <label class="label__label" for="launch__details">Details</label>
       <p class="launch__details">${this.details}</p>
-      <div class="launch__success">${this.success}</div>
-      <div class="launch__links">${this.links}</div>
+      <label class="label__label" for="launch__success">Success status</label>
+      <div class="launch__success">${utils.wordCapitalize(this.success)}</div>
+      <ul class="launch__links">
+        ${this.links}
+      </ul>
     `;
     return launchEl;
   },
 };
 
+launchMethods.unixDateHandler(1617813240);
 const LatestLaunch = async function () {
   const launch = Object.create(launchMethods);
   await launch.getLatestLaunch(SPACEX_API).then((l) => {
     launch.name = l.name;
-    launch.date = l.date_utc;
+    launch.date = launch.unixDateHandler(l.date_unix).split(' ')[0];
+    launch.time = launch.unixDateHandler(l.date_unix).split(' ')[1];
     launch.details = l.details;
     launch.success = l.success;
     launch.links = l.links;
   });
   return launch;
 };
+
+const l = LatestLaunch();
+setTimeout(() => console.log(l), 1000);
 
 const App = {
   infoInit() {
