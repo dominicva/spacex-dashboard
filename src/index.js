@@ -106,10 +106,31 @@ const launchMethods = {
     const launch = await launchRaw.json();
     return launch;
   },
+  toggleBtnText(btnEl) {
+    const get = 'Get latest launch';
+    const remove = 'Remove latest launch';
+    if (btnEl.textContent == get) {
+      btnEl.textContent = remove;
+    } else {
+      btnEl.textContent = get;
+    }
+  },
   getLatestLaunchHandler() {
     LatestLaunch()
       .then((launch) => launch.renderLatestLaunch())
       .then((el) => document.querySelector('.launch__container').append(el));
+  },
+  removeLatestLaunchHandler() {
+    document.querySelector('.launch__container').innerHTML = '';
+  },
+  latestLaunchHandler(e) {
+    if (e.target.textContent == 'Get latest launch') {
+      this.getLatestLaunchHandler.call(launchMethods);
+      this.toggleBtnText.call(launchMethods, e.target);
+    } else {
+      this.removeLatestLaunchHandler.call(launchMethods);
+      this.toggleBtnText.call(launchMethods, e.target);
+    }
   },
   unixDateHandler(unixTimestamp) {
     // THANK YOU: https://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
@@ -161,7 +182,6 @@ const launchMethods = {
   },
 };
 
-launchMethods.unixDateHandler(1617813240);
 const LatestLaunch = async function () {
   const launch = Object.create(launchMethods);
   await launch.getLatestLaunch(SPACEX_API).then((l) => {
@@ -175,9 +195,6 @@ const LatestLaunch = async function () {
   return launch;
 };
 
-const l = LatestLaunch();
-setTimeout(() => console.log(l), 1000);
-
 const App = {
   infoInit() {
     return Info().then((info) =>
@@ -187,7 +204,7 @@ const App = {
   initEventListeners() {
     document
       .querySelector('button')
-      .addEventListener('click', launchMethods.getLatestLaunchHandler);
+      .addEventListener('click', (e) => launchMethods.latestLaunchHandler(e));
   },
   init() {
     this.infoInit();
