@@ -100,47 +100,13 @@ const UrlsInfoItem = function (label, value) {
 /*
 LAUNCHES
 */
-// LATEST LAUNCH
+
+// METHODS COMMON TO BOTH LAST AND NEXT LAUNCHES
 const launchMethods = {
   async getLaunch(baseUrl, endpoint) {
     const launchRaw = await fetch(`${baseUrl}${endpoint}`);
     const launch = await launchRaw.json();
     return launch;
-  },
-  toggleBtnText(btnEl) {
-    const get = 'Get latest launch';
-    const remove = 'Remove latest launch';
-    if (btnEl.textContent == get) {
-      btnEl.textContent = remove;
-    } else {
-      btnEl.textContent = get;
-    }
-  },
-  getLatestLaunchHandler() {
-    LatestLaunch(SPACEX_API)
-      .then((launch) => launch.renderLatestLaunch())
-      .then((el) => document.querySelector('.launch__container').append(el));
-  },
-  removeLatestLaunchHandler() {
-    document.querySelector('.launch__container').innerHTML = '';
-  },
-  latestLaunchHandler(e) {
-    if (e.target.textContent == 'Get latest launch') {
-      this.getLatestLaunchHandler.call(launchMethods);
-      this.toggleBtnText.call(launchMethods, e.target);
-    } else {
-      this.removeLatestLaunchHandler.call(launchMethods);
-      this.toggleBtnText.call(launchMethods, e.target);
-    }
-  },
-  nextLaunchHandler(e) {
-    if (e.target.textContent == 'Get next launch') {
-      this.getNextLaunchHandler.call(launchMethods);
-      this.toggleBtnText.call(launchMethods, e.target);
-    } else {
-      this.removeLatestLaunchHandler.call(launchMethods);
-      this.toggleBtnText.call(launchMethods, e.target);
-    }
   },
   unixDateHandler(unixTimestamp) {
     // THANK YOU: https://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
@@ -157,6 +123,36 @@ const launchMethods = {
     return `${day}/${month}/${year} ${hour}:${minute.substr(
       -2
     )}:${second.substr(-2)}`;
+  },
+  toggleBtnText(btnEl, get, remove) {
+    if (btnEl.textContent == get) {
+      btnEl.textContent = remove;
+    } else {
+      btnEl.textContent = get;
+    }
+  },
+};
+
+// LATEST-LAUNCH-SPECIFIC METHODS LINKED TO ABOVE LAUNCH METHODS
+const latestLaunchMethods = Object.assign(Object.create(launchMethods), {
+  getLatestLaunchHandler() {
+    LatestLaunch(SPACEX_API)
+      .then((launch) => launch.renderLatestLaunch())
+      .then((el) => document.querySelector('.launch__container').append(el));
+  },
+  removeLatestLaunchHandler() {
+    document.querySelector('.launch__container').innerHTML = '';
+  },
+  latestLaunchHandler(e) {
+    const get = 'Get latest launch';
+    const remove = 'Remove latest launch';
+    if (e.target.textContent == get) {
+      this.getLatestLaunchHandler.call(latestLaunchMethods);
+      this.toggleBtnText.call(launchMethods, e.target, get, remove);
+    } else {
+      this.removeLatestLaunchHandler.call(launchMethods);
+      this.toggleBtnText.call(launchMethods, e.target, get, remove);
+    }
   },
   renderLatestLaunch() {
     const launchEl = document.createElement('div');
@@ -190,11 +186,11 @@ const launchMethods = {
     `;
     return launchEl;
   },
-};
+});
 
-// LATEST LAUNCH
+// LATEST LAUNCH "CONSTRUCTOR"
 const LatestLaunch = async function ({ BASE_URL, LATEST_LAUNCH }) {
-  const launch = Object.create(launchMethods);
+  const launch = Object.create(latestLaunchMethods);
   await launch.getLaunch(BASE_URL, LATEST_LAUNCH).then((l) => {
     launch.name = l.name;
     launch.date = launch.unixDateHandler(l.date_unix).split(' ')[0];
@@ -206,7 +202,20 @@ const LatestLaunch = async function ({ BASE_URL, LATEST_LAUNCH }) {
   return launch;
 };
 
-// NEXT LAUNCH
+// NEXT-LAUNCH-SPECIFIC METHODS, LINKED TO SHARED LAUNCH METHODS ABOVE
+const nextLaunchMethods = Object.assign(Object.create(launchMethods), {
+  // TO BE POPULATED
+  // nextLaunchHandler(e) {
+  //   if (e.target.textContent == 'Get next launch') {
+  //     this.getNextLaunchHandler.call(launchMethods);
+  //     this.toggleBtnText.call(launchMethods, e.target);
+  //   } else {
+  //     this.removeLatestLaunchHandler.call(launchMethods);
+  //     this.toggleBtnText.call(launchMethods, e.target);
+  //   }
+  // },
+});
+
 const NextLaunch = async function ({ BASE_URL, NEXT_LAUNCH }) {
   const launch = Object.create(launchMethods);
   await launch.getLaunch(BASE_URL, NEXT_LAUNCH).then((l) => {
@@ -217,8 +226,10 @@ const NextLaunch = async function ({ BASE_URL, NEXT_LAUNCH }) {
   });
   return launch;
 };
-const next = fetch(`${SPACEX_API.BASE_URL}${SPACEX_API.NEXT_LAUNCH}`);
-next.then((d) => d.json()).then((l) => console.log(l));
+
+// TEMPORARY INLINE TEST
+// const next = fetch(`${SPACEX_API.BASE_URL}${SPACEX_API.NEXT_LAUNCH}`);
+// next.then((d) => d.json()).then((l) => console.log(l));
 
 const App = {
   infoInit() {
@@ -229,10 +240,12 @@ const App = {
   initEventListeners() {
     document
       .querySelector('.latest-launch__btn')
-      .addEventListener('click', (e) => launchMethods.latestLaunchHandler(e));
-    document
-      .querySelector('.next-launch__btn')
-      .addEventListener('click', (e) => launchMethods.nextLaunchHandler(e));
+      .addEventListener('click', (e) =>
+        latestLaunchMethods.latestLaunchHandler(e)
+      );
+    // document
+    //   .querySelector('.next-launch__btn')
+    //   .addEventListener('click', (e) => launchMethods.nextLaunchHandler(e));
   },
   init() {
     this.infoInit();
