@@ -16,11 +16,14 @@ const utils = {
   },
 };
 
-/*
-COMPANY INFO SECTION
-*/
+/**
+ * @description Makes API request for company information
+ * @param {Object} SPACEX_API - Container for API endpoints
+ * @param {string} BASE_URL - SpaceX API base URL
+ * @param {string} COMPANY - API endpoint for SpaceX company info
+ * @returns {Object} Desired response values
 
-// DATA
+ */
 const getCompanyInfo = function ({ BASE_URL, COMPANY }) {
   return fetch(`${BASE_URL}${COMPANY}`)
     .then((rawData) => rawData.json())
@@ -37,7 +40,14 @@ const getCompanyInfo = function ({ BASE_URL, COMPANY }) {
     });
 };
 
-// FUNCTIONALITY
+/**
+ * @description Template DOM component object
+ * @constructor Intentionally does NOT need to be called with 'new'
+ * @param {string} tag - HTML tag
+ * @param {*} className - CSS class
+ * @param {*} html – innerHTML for the Component instance
+ * @returns {Object}
+ */
 const Component = function (tag, className, html) {
   const domEl = document.createElement(tag);
   domEl.className = className;
