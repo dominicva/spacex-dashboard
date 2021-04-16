@@ -41,7 +41,7 @@ const getCompanyInfo = function ({ BASE_URL, COMPANY }) {
 };
 
 /**
- * @description Template DOM component object
+ * @description Template DOM component class
  * @constructor Intentionally does NOT need to be called with 'new'
  * @param {string} tag - HTML tag
  * @param {*} className - CSS class
