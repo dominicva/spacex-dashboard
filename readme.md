@@ -6,7 +6,7 @@
 
 ## What does it do?
 
-- Reaches out to SpaceX API on page load and populates the company info/overview section at the top of the page with select response data
+- Reaches out to SpaceX API on page load and populates the company info/overview section at the top of the page with select response data.
 - Renders two buttons that respectively allow the user to get a summary of the most recent and next upcoming SpaceX launches.
 - Summaries includes mission description, embedded youTube video of the launch webcast etc.
 

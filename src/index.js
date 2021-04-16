@@ -22,7 +22,6 @@ const utils = {
  * @param {string} BASE_URL - SpaceX API base URL
  * @param {string} COMPANY - API endpoint for SpaceX company info
  * @returns {Object} Desired response values
-
  */
 const getCompanyInfo = function ({ BASE_URL, COMPANY }) {
   return fetch(`${BASE_URL}${COMPANY}`)
@@ -44,8 +43,8 @@ const getCompanyInfo = function ({ BASE_URL, COMPANY }) {
  * @description Template DOM component class
  * @constructor Intentionally does NOT need to be called with 'new'
  * @param {string} tag - HTML tag
- * @param {*} className - CSS class
- * @param {*} html – innerHTML for the Component instance
+ * @param {string} className - CSS class
+ * @param {string} html – innerHTML for the Component instance
  * @returns {Object}
  */
 const Component = function (tag, className, html) {
