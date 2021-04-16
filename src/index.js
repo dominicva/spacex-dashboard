@@ -1,10 +1,15 @@
+// require('dotenv').config();
+const mapStyles = require('./map.json');
+
 import 'regenerator-runtime/runtime';
+import { Loader } from '@googlemaps/js-api-loader';
 
 const SPACEX_API = {
   BASE_URL: 'https://api.spacexdata.com/v4',
   COMPANY: '/company',
   LATEST_LAUNCH: '/launches/latest',
   NEXT_LAUNCH: '/launches/next',
+  LAUNCHPADS: '/launchpads',
 };
 
 /*
@@ -15,6 +20,52 @@ const utils = {
     return String(word)[0].toUpperCase() + String(word).slice(1);
   },
 };
+
+// LAUNCHPADS
+const getLaunchPads = async function () {
+  const launchPadsArr = [];
+  await fetch(`${SPACEX_API.BASE_URL}${SPACEX_API.LAUNCHPADS}`)
+    .then((d) => d.json())
+    .then((d) =>
+      d.forEach((launchPad) => {
+        launchPadsArr.push({
+          fullName: launchPad.full_name,
+          details: launchPad.details,
+          latitude: launchPad.latitude,
+          longitude: launchPad.longitude,
+        });
+      })
+    );
+  return launchPadsArr;
+};
+
+const initMap = function () {
+  const uluru = { lat: -25.344, lng: 131.036 };
+  const loader = new Loader({
+    apiKey: 'AIzaSyDc319-jjkfND5IlTgKA0yITX-sJUInuJE',
+    version: 'weekly',
+  });
+
+  loader.load().then(() => {
+    const map = new google.maps.Map(document.getElementById('map'), {
+      center: uluru,
+      zoom: 2,
+      styles: mapStyles,
+    });
+    const launchPads = getLaunchPads();
+    launchPads.then((launchPads) => {
+      launchPads.forEach((launchPad) => {
+        console.log(launchPad);
+        const { latitude, longitude } = launchPad;
+        new google.maps.Marker({
+          position: { lat: latitude, lng: longitude },
+          map: map,
+        });
+      });
+    });
+  });
+};
+// initMap();
 
 /**
  * @description Makes API request for company information

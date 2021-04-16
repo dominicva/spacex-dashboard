@@ -17,6 +17,11 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  height: 100%;
+}
+
 body {
   background-color: var(--body-bg);
   color: var(--pure-white);
@@ -40,9 +45,10 @@ a:hover {
   color: var(--secondary);
 }
 
-button {
+button.main-control {
   height: 3rem;
-  padding: 0 1.5rem;
+  width: 10rem;
+  margin-right: 1rem;
   font-family: var(--font-family);
   font-size: 14px;
   cursor: pointer;
@@ -56,21 +62,22 @@ button:focus {
   outline: none;
 }
 
-button:hover {
+button.main-control:hover {
   border-radius: 2rem;
   color: var(--pure-white);
 }
 
-button:first-of-type {
-  margin-right: 1rem;
-}
-
-button:first-of-type:hover {
+button.main-control:first-of-type:hover {
   background-color: var(--secondary);
 }
 
-button:nth-of-type(2):hover {
+button.main-control:nth-of-type(2):hover {
   background-color: var(--tertiary);
+}
+
+button.main-control:nth-of-type(3):hover {
+  background-color: #ff0;
+  color: #000;
 }
 
 iframe {
@@ -110,6 +117,10 @@ iframe {
 
 .btns__container {
   margin: 2rem 0 4rem 0;
+}
+
+#map {
+  height: 100%;
 }
 
 .launch {
