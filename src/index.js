@@ -100,9 +100,10 @@ const UrlsInfoItem = function (label, value) {
 /*
 LAUNCHES
 */
+// LATEST LAUNCH
 const launchMethods = {
-  async getLatestLaunch({ BASE_URL, LATEST_LAUNCH }) {
-    const launchRaw = await fetch(`${BASE_URL}${LATEST_LAUNCH}`);
+  async getLaunch(baseUrl, endpoint) {
+    const launchRaw = await fetch(`${baseUrl}${endpoint}`);
     const launch = await launchRaw.json();
     return launch;
   },
@@ -116,7 +117,7 @@ const launchMethods = {
     }
   },
   getLatestLaunchHandler() {
-    LatestLaunch()
+    LatestLaunch(SPACEX_API)
       .then((launch) => launch.renderLatestLaunch())
       .then((el) => document.querySelector('.launch__container').append(el));
   },
@@ -126,6 +127,15 @@ const launchMethods = {
   latestLaunchHandler(e) {
     if (e.target.textContent == 'Get latest launch') {
       this.getLatestLaunchHandler.call(launchMethods);
+      this.toggleBtnText.call(launchMethods, e.target);
+    } else {
+      this.removeLatestLaunchHandler.call(launchMethods);
+      this.toggleBtnText.call(launchMethods, e.target);
+    }
+  },
+  nextLaunchHandler(e) {
+    if (e.target.textContent == 'Get next launch') {
+      this.getNextLaunchHandler.call(launchMethods);
       this.toggleBtnText.call(launchMethods, e.target);
     } else {
       this.removeLatestLaunchHandler.call(launchMethods);
@@ -182,9 +192,10 @@ const launchMethods = {
   },
 };
 
-const LatestLaunch = async function () {
+// LATEST LAUNCH
+const LatestLaunch = async function ({ BASE_URL, LATEST_LAUNCH }) {
   const launch = Object.create(launchMethods);
-  await launch.getLatestLaunch(SPACEX_API).then((l) => {
+  await launch.getLaunch(BASE_URL, LATEST_LAUNCH).then((l) => {
     launch.name = l.name;
     launch.date = launch.unixDateHandler(l.date_unix).split(' ')[0];
     launch.time = launch.unixDateHandler(l.date_unix).split(' ')[1];
@@ -195,6 +206,20 @@ const LatestLaunch = async function () {
   return launch;
 };
 
+// NEXT LAUNCH
+const NextLaunch = async function ({ BASE_URL, NEXT_LAUNCH }) {
+  const launch = Object.create(launchMethods);
+  await launch.getLaunch(BASE_URL, NEXT_LAUNCH).then((l) => {
+    launch.name = l.name;
+    launch.date = launch.unixDateHandler(l.date_unix).split(' ')[0];
+    launch.time = launch.unixDateHandler(l.date_unix).split(' ')[1];
+    launch.details = l.details;
+  });
+  return launch;
+};
+const next = fetch(`${SPACEX_API.BASE_URL}${SPACEX_API.NEXT_LAUNCH}`);
+next.then((d) => d.json()).then((l) => console.log(l));
+
 const App = {
   infoInit() {
     return Info().then((info) =>
@@ -203,8 +228,11 @@ const App = {
   },
   initEventListeners() {
     document
-      .querySelector('button')
+      .querySelector('.latest-launch__btn')
       .addEventListener('click', (e) => launchMethods.latestLaunchHandler(e));
+    document
+      .querySelector('.next-launch__btn')
+      .addEventListener('click', (e) => launchMethods.nextLaunchHandler(e));
   },
   init() {
     this.infoInit();

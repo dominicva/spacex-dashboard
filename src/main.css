@@ -5,6 +5,7 @@
   --body-bg: #000;
   --pure-white: #fff;
   --secondary: #007aff;
+  --tertiary: #ff385c;
 
   /* TYPOGRAPHY */
   --font-family: 'Fira Sans', sans-serif;
@@ -51,14 +52,25 @@ button {
   border: none;
 }
 
+button:focus {
+  outline: none;
+}
+
 button:hover {
   border-radius: 2rem;
-  background-color: var(--secondary);
   color: var(--pure-white);
 }
 
-button:focus {
-  outline: none;
+button:first-of-type {
+  margin-right: 1rem;
+}
+
+button:first-of-type:hover {
+  background-color: var(--secondary);
+}
+
+button:nth-of-type(2):hover {
+  background-color: var(--tertiary);
 }
 
 iframe {
