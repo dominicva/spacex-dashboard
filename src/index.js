@@ -11,16 +11,16 @@ const SPACEX_API = {
   LAUNCHPADS: '/launchpads',
 };
 
-/*
-UTILS
-*/
 const utils = {
   wordCapitalize(word) {
     return String(word)[0].toUpperCase() + String(word).slice(1);
   },
 };
 
-// LAUNCHPADS
+/**
+ * Fetches and formats data on SpaceX's launchpads
+ * @returns {Array} Each element is an object containing select data
+ */
 const getLaunchPads = async function () {
   const launchPadsArr = [];
   await fetch(`${SPACEX_API.BASE_URL}${SPACEX_API.LAUNCHPADS}`)
