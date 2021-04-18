@@ -24,16 +24,22 @@ const utils = {
 const getLaunchPads = async function () {
   const launchPadsArr = [];
   await fetch(`${SPACEX_API.BASE_URL}${SPACEX_API.LAUNCHPADS}`)
-    .then((d) => d.json())
-    .then((d) =>
-      d.forEach((launchPad) => {
-        launchPadsArr.push({
-          fullName: launchPad.full_name,
-          details: launchPad.details,
-          latitude: launchPad.latitude,
-          longitude: launchPad.longitude,
-        });
-      })
+    .then((data) => data.json())
+    .then((data) =>
+      launchPadsArr.push(
+        ...data.map((launchPad) => {
+          const o = {};
+          // must wrap destucturing pattern without declarator in parens
+          ({
+            full_name: o.fullName,
+            details: o.details,
+            latitude: o.latitude,
+            longitude: o.longitude,
+          } = launchPad); // adventures in object destructuring
+
+          return o;
+        })
+      )
     );
   return launchPadsArr;
 };
