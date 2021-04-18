@@ -46,37 +46,44 @@ const getLaunchPads = async function () {
   return launchPads;
 };
 
-const initMap = function () {
-  const hawthorne = { lat: 33.916, lng: -118.352 };
+const mapHandler = function () {
   const loader = new Loader({
     apiKey: 'AIzaSyDc319-jjkfND5IlTgKA0yITX-sJUInuJE',
     version: 'weekly',
   });
 
+  const hawthorne = { lat: 33.916, lng: -118.352 };
+
+  const mapRootEl = document.getElementById('map');
+  mapRootEl.style.display = 'block';
+
   loader.load().then(() => {
-    const map = new google.maps.Map(document.getElementById('map'), {
+    const map = new google.maps.Map(mapRootEl, {
       center: hawthorne,
-      zoom: 2,
+      zoom: 3,
       styles: mapStyles,
     });
+
     const launchPads = getLaunchPads();
     launchPads.then((launchPads) => {
       launchPads.forEach((launchPad) => {
-        console.log(launchPad);
         const { fullName, details } = launchPad;
         const infoWindowHtml = `
           <h4 class="map__info-window">${fullName}</h4>
           <p class="map__info-window">${details}</p>
         `;
+
         const infowindow = new google.maps.InfoWindow({
           content: infoWindowHtml,
         });
+
         const { latitude, longitude } = launchPad;
         const marker = new google.maps.Marker({
           position: { lat: latitude, lng: longitude },
           map: map,
-          title: `${fullName.slice(0, 10)}`,
+          title: `${fullName}`,
         });
+
         marker.addListener('click', () => {
           infowindow.open(map, marker);
         });
@@ -84,7 +91,6 @@ const initMap = function () {
     });
   });
 };
-initMap();
 
 /**
  * @description Makes API request for company information
@@ -317,6 +323,10 @@ const App = {
     );
   },
   initEventListeners() {
+    document
+      .querySelector('.nav-items.launchpads')
+      .addEventListener('click', (e) => mapHandler(e));
+
     document
       .querySelector('.nav-items.latest-launch')
       .addEventListener('click', (e) =>
