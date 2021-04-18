@@ -22,11 +22,12 @@ const utils = {
  * @returns {Array} Each element is an object containing select data
  */
 const getLaunchPads = async function () {
-  const launchPadsArr = [];
+  const launchPads = [];
+
   await fetch(`${SPACEX_API.BASE_URL}${SPACEX_API.LAUNCHPADS}`)
     .then((data) => data.json())
     .then((data) =>
-      launchPadsArr.push(
+      launchPads.push(
         ...data.map((launchPad) => {
           const o = {};
           // must wrap destucturing pattern without declarator in parens
@@ -35,13 +36,14 @@ const getLaunchPads = async function () {
             details: o.details,
             latitude: o.latitude,
             longitude: o.longitude,
-          } = launchPad); // adventures in object destructuring
+          } = launchPad);
 
           return o;
         })
       )
     );
-  return launchPadsArr;
+
+  return launchPads;
 };
 
 const initMap = function () {
