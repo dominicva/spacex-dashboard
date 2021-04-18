@@ -85,6 +85,11 @@ iframe {
   height: 20rem;
 }
 
+h4.map__info-window,
+p.map__info-window {
+  color: var(--body-bg);
+}
+
 .heading {
   font-weight: var(--h1-weight);
   letter-spacing: 1px;

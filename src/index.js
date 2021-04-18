@@ -39,7 +39,7 @@ const getLaunchPads = async function () {
 };
 
 const initMap = function () {
-  const uluru = { lat: -25.344, lng: 131.036 };
+  const hawthorne = { lat: 33.916, lng: -118.352 };
   const loader = new Loader({
     apiKey: 'AIzaSyDc319-jjkfND5IlTgKA0yITX-sJUInuJE',
     version: 'weekly',
@@ -47,7 +47,7 @@ const initMap = function () {
 
   loader.load().then(() => {
     const map = new google.maps.Map(document.getElementById('map'), {
-      center: uluru,
+      center: hawthorne,
       zoom: 2,
       styles: mapStyles,
     });
@@ -55,10 +55,22 @@ const initMap = function () {
     launchPads.then((launchPads) => {
       launchPads.forEach((launchPad) => {
         console.log(launchPad);
+        const { fullName, details } = launchPad;
+        const infoWindowHtml = `
+          <h4 class="map__info-window">${fullName}</h4>
+          <p class="map__info-window">${details}</p>
+        `;
+        const infowindow = new google.maps.InfoWindow({
+          content: infoWindowHtml,
+        });
         const { latitude, longitude } = launchPad;
-        new google.maps.Marker({
+        const marker = new google.maps.Marker({
           position: { lat: latitude, lng: longitude },
           map: map,
+          title: `${fullName.slice(0, 10)}`,
+        });
+        marker.addListener('click', () => {
+          infowindow.open(map, marker);
         });
       });
     });
