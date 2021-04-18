@@ -9,11 +9,13 @@
   <body>
     <h1 class="heading">SpaceX Dashboard</h1>
     <section class="info__container"></section>
-    <div class="btns__container">
-      <button class="sites-map main-control">View launchpads</button>
-      <button class="latest-launch__btn main-control">Get latest launch</button>
-      <button class="next-launch__btn main-control">Get next launch</button>
-    </div>
+    <nav class="nav__container">
+      <ul>
+        <li class="nav-items launchpads">Launchpads map</li>
+        <li class="nav-items latest-launch">Latest launch</li>
+        <li class="nav-items next-launch">Next launch</li>
+      </ul>
+    </nav>
     <div id="map"></div>
     <section class="launch__container"></section>
     <script src="index.js"></script>

@@ -223,7 +223,7 @@ const latestLaunchMethods = Object.assign(Object.create(launchMethods), {
     document.querySelector('.launch__container').innerHTML = '';
   },
   latestLaunchHandler(e) {
-    const get = 'Get latest launch';
+    const get = 'Latest launch';
     const remove = 'Remove latest launch';
     if (e.target.textContent == get) {
       this.getLatestLaunchHandler.call(latestLaunchMethods);
@@ -318,7 +318,7 @@ const App = {
   },
   initEventListeners() {
     document
-      .querySelector('.latest-launch__btn')
+      .querySelector('.nav-items.latest-launch')
       .addEventListener('click', (e) =>
         latestLaunchMethods.latestLaunchHandler(e)
       );
