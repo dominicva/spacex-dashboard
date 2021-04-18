@@ -1,4 +1,3 @@
-// require('dotenv').config();
 const mapStyles = require('./map.json');
 
 import 'regenerator-runtime/runtime';
@@ -65,7 +64,7 @@ const initMap = function () {
     });
   });
 };
-// initMap();
+initMap();
 
 /**
  * @description Makes API request for company information
