@@ -313,10 +313,6 @@ const NextLaunch = async function ({ BASE_URL, NEXT_LAUNCH }) {
   return launch;
 };
 
-// TEMPORARY INLINE TEST
-// const next = fetch(`${SPACEX_API.BASE_URL}${SPACEX_API.NEXT_LAUNCH}`);
-// next.then((d) => d.json()).then((l) => console.log(l));
-
 const App = {
   infoInit() {
     return Info().then((info) =>
@@ -334,12 +330,10 @@ const App = {
       event.target.classList.add('bottom-border');
     });
 
-    document
-      // .querySelector('.nav-items.launchpads')
-      .addEventListener('DOMContentLoaded', (e) => {
-        mapHandler(e);
-        navItems[0].classList.add('bottom-border');
-      });
+    document.addEventListener('DOMContentLoaded', (e) => {
+      mapHandler(e);
+      navItems[0].classList.add('bottom-border');
+    });
 
     document
       .querySelector('.nav-item.latest-launch')
