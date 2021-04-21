@@ -122,7 +122,7 @@ button.main-control:nth-of-type(3):hover {
   background-color: #ff0;
   color: #000;
 }
-.nav-items {
+.nav-item {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -135,7 +135,11 @@ button.main-control:nth-of-type(3):hover {
   transition: border 0.5s ease;
 }
 
-.nav-items:hover {
+.nav-item:hover {
+  border-bottom: 1px solid var(--pure-white);
+}
+
+.bottom-border {
   border-bottom: 1px solid var(--pure-white);
 }
 

@@ -324,15 +324,29 @@ const App = {
     );
   },
   initEventListeners() {
-    document
-      .querySelector('.nav-items.launchpads')
-      .addEventListener('click', (e) => mapHandler(e));
+    const nav = document.querySelector('.nav-items');
+    const navItems = document.querySelector('.nav-items').children;
+    nav.addEventListener('click', (e) => {
+      const navItemsArr = Array.from(navItems);
+      navItemsArr.forEach((el) => {
+        el.classList.remove('bottom-border');
+      });
+      event.target.classList.add('bottom-border');
+    });
 
     document
-      .querySelector('.nav-items.latest-launch')
+      // .querySelector('.nav-items.launchpads')
+      .addEventListener('DOMContentLoaded', (e) => {
+        mapHandler(e);
+        navItems[0].classList.add('bottom-border');
+      });
+
+    document
+      .querySelector('.nav-item.latest-launch')
       .addEventListener('click', (e) =>
         latestLaunchMethods.latestLaunchHandler(e)
       );
+
     // document
     //   .querySelector('.next-launch__btn')
     //   .addEventListener('click', (e) => launchMethods.nextLaunchHandler(e));
