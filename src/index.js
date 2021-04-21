@@ -75,6 +75,7 @@ const mapHandler = function () {
 
         const infowindow = new google.maps.InfoWindow({
           content: infoWindowHtml,
+          maxWidth: 320,
         });
 
         const { latitude, longitude } = launchPad;
