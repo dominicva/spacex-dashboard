@@ -1,6 +1,6 @@
 import { Info } from './spacexInfo';
 import { mapHandler } from './launchpads';
-import { launchMethod, latestLaunchMethods } from './launches';
+import { latestLaunchMethods } from './launches';
 
 const App = {
   infoInit() {

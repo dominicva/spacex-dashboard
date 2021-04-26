@@ -1,6 +1,6 @@
 import SPACEX_API from './api';
 import utils from './utils';
-// METHODS COMMON TO BOTH LAST AND NEXT LAUNCHES
+
 const launchMethods = {
   async getLaunch(baseUrl, endpoint) {
     const launchRaw = await fetch(`${baseUrl}${endpoint}`);
@@ -31,7 +31,6 @@ const launchMethods = {
   },
 };
 
-// LATEST-LAUNCH-SPECIFIC METHODS LINKED TO ABOVE LAUNCH METHODS
 const latestLaunchMethods = Object.assign(Object.create(launchMethods), {
   getLatestLaunchHandler() {
     LatestLaunch(SPACEX_API)
@@ -86,7 +85,6 @@ const latestLaunchMethods = Object.assign(Object.create(launchMethods), {
   },
 });
 
-// LATEST LAUNCH "CONSTRUCTOR"
 const LatestLaunch = async function ({ BASE_URL, LATEST_LAUNCH }) {
   const launch = Object.create(latestLaunchMethods);
   await launch.getLaunch(BASE_URL, LATEST_LAUNCH).then((l) => {
@@ -100,7 +98,6 @@ const LatestLaunch = async function ({ BASE_URL, LATEST_LAUNCH }) {
   return launch;
 };
 
-// NEXT-LAUNCH-SPECIFIC METHODS, LINKED TO SHARED LAUNCH METHODS ABOVE
 const nextLaunchMethods = Object.assign(Object.create(launchMethods), {});
 
 const NextLaunch = async function ({ BASE_URL, NEXT_LAUNCH }) {

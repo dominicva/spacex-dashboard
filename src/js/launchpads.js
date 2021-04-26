@@ -1,6 +1,5 @@
 import { Loader } from '@googlemaps/js-api-loader';
 import SPACEX_API from './api';
-
 const mapStyles = require('../map.json');
 
 /**
