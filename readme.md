@@ -25,7 +25,7 @@
 
 ## What needs work
 
-- This is still very raw. I haven't tackled UI interactions or proper styling yet.
+- This is still very raw. I haven't tackled UI interactions or proper styling yet. A few things are currently downright broken :)
 
 ### Disclaimer:
 
