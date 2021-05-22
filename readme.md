@@ -23,6 +23,10 @@
 3. You may need to have parcel installed globally: run npm install -g parcel-bundler
 4. Run npm run dev to start dev server
 
+## What needs work
+
+- This is still very raw. I haven't tackled UI interactions or proper styling yet.
+
 ### Disclaimer:
 
 Unfortunately, I am not an employee of, or affiliated with, SpaceX in any way.
